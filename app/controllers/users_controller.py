@@ -21,7 +21,7 @@ def login():
     password = data.get("password", None)
     if not email or not password:
         return RM.error("Es necesario enviar todas las credenciales")
-    user = user_model.get_by_email_password(email, password)
+    user = user_model.get_by_email_password(email)
     if not user :
         return RM.error("No se encontro un usuario")
     if not EM.compare_hashes(password,  user["password"]):

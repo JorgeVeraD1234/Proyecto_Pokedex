@@ -36,7 +36,7 @@ def delete(id):
 @bp.route("/", methods = ["GET"])
 @jwt_required()
 def get_all():
-    user_id = get_jwt_identity
+    user_id = get_jwt_identity()
     data = FP_MODEL.find_all(user_id)
     return RM.success(data)
 
