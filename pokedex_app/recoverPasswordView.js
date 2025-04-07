@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     send: {
-        backgroundColor: 'back',
-        borderRadius: 1,
+        backgroundColor: 'black',
+        borderRadius: 8,
         marginTop: 20,
         alignItems: 'center',
     },

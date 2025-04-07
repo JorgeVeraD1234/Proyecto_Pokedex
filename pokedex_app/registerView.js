@@ -108,7 +108,7 @@ export const Register = () => {
                     }
                 />
 
-                <Text style={styles.label}>Contrasena</Text>
+                <Text style={styles.label}>Contraseña</Text>
                 <TextInput
                     style={styles.input}
                     value={data.password}
@@ -118,7 +118,7 @@ export const Register = () => {
                     }
                 />
 
-                <Text style={styles.label}>Confirmar contrasena</Text>
+                <Text style={styles.label}>Confirmar contraseña</Text>
                 <TextInput
                     style={styles.input}
                     value={data.cPassword}

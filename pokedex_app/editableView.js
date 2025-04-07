@@ -101,7 +101,7 @@ export const EditUser = () => {
                     onChangeText={(value) => onChange("email", value)}
                 />
 
-                <Text style={styles.label}>Contrasena</Text>
+                <Text style={styles.label}>Contraseña</Text>
                 <TextInput
                     style={styles.input}
                     secureTextEntry={true}
@@ -109,7 +109,7 @@ export const EditUser = () => {
                     onChangeText={(value) => onChange("password", value)}
                 />
 
-                <Text style={styles.label}>Confirmar contrasena</Text>
+                <Text style={styles.label}>Confirmar contraseña</Text>
                 <TextInput
                     style={styles.input}
                     secureTextEntry={true}
