@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     app.config["MONGO_URI"] = os.getenv("MONGO_URI")
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=4)
     mongo.init_app(app)
     jwt.init_app(app)
 
