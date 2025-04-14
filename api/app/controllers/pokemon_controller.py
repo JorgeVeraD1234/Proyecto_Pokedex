@@ -1,26 +1,23 @@
-from flask import Blueprint, request, jsonify
-from marshmallow import ValidationError
-from app.models.Factory import ModelFactory
-from bson import ObjectId
+from flask import Blueprint, request
 from app.tools.response_manager import ResponseManager
+from bson import ObjectId
+from app.models.Factory import ModelFactory
 from flask_jwt_extended import jwt_required
 
-bp = Blueprint("pokemons", __name__, url_prefix="/pokemons")
+bp = Blueprint("pokemon", __name__, url_prefix="/pokemon")
 RM = ResponseManager()
-pokemons_model = ModelFactory.get_model("pokemons")
+POKEMON_MODEL = ModelFactory.get_model("pokemons")
 
-
+#Get One
 @bp.route("/get/<string:pokemon_id>", methods=["GET"])
 @jwt_required()
 def get_pokemon(pokemon_id):
-    data = pokemons_model.find_by_id(ObjectId(pokemon_id))
-    return RM.success(data)
+    pokemon = POKEMON_MODEL.find_by_id(ObjectId(pokemon_id))
+    return RM.success(pokemon)
 
-@bp.route("/find_all", methods = ["GET"])
+#Get All
+@bp.route("/", methods=["GET"])
 @jwt_required()
-def find_all():
-    try:
-        data = pokemons_model.find_all()
-        return data
-    except ValidationError as err:
-        return jsonify("Los pokemon estan muertos, chin no se ven ", 400)
+def get_all():
+    data = POKEMON_MODEL.find_all()
+    return RM.success(data)

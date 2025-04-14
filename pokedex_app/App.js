@@ -1,110 +1,60 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, Pressable } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Register } from './registerView';
-import { RecoverPassword } from "./recoverPasswordView"
-import { EditUser } from "./editableView"
+import Ionicons from "@expo/vector-icons/Ionicons"
+import { navigationRef } from './navigation';
+import { useState } from 'react';
+import { Login } from './Login';
+import { Home } from './Home';
+import Unique from './Unique';
+import { ListFavorites } from './ListFavorites';
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-const Stack = createStackNavigator();
-
-const Home = ({ navigation }) => {
+function Tabs() {
   return (
-    <View style={styles.container}>
-      <View>
-        <Image
-          source={{
-            uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/2052px-Pok%C3%A9_Ball_icon.svg.png',
-          }}
-          style={{ width: 200, height: 200 }}
-        />
-      </View>
-      <View>
-        <Text style={styles.title}>Iniciar Sesión</Text>
+    <Tab.Navigator initialRouteName='Home' screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
 
-        <Text style={styles.label}>Correo</Text>
-        <TextInput style={styles.input} />
-
-        <Text style={styles.label}>Contraseña</Text>
-        <TextInput style={styles.input} secureTextEntry={true} />
-
-        <Pressable style={styles.send}>
-          <Text style={styles.textButton}>Enviar</Text>
-        </Pressable>
-      </View>
-      <View style={styles.containerFooter}>
-        <Pressable onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.footerText}>Regístrate</Text>
-        </Pressable>
-
-        <Pressable onPress={() => navigation.navigate('RecoverPassword')}>
-          <Text style={styles.footerText}>RecoverPassword</Text>
-        </Pressable>
-
-        <Pressable onPress={() => navigation.navigate('EditUser')}>
-          <Text style={styles.footerText}>EditUser</Text>
-        </Pressable>
-      </View>
-    </View>
+        if (route.name === 'Home') {
+          iconName = focused
+            ? 'home'
+            : 'home-outline';
+        } else if (route.name === 'Favorites') {
+          iconName = focused ? 'heart-sharp' : 'heart-outline';
+        }
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: 'green',
+      tabBarInactiveTintColor: 'gray',
+    })}>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Favorites" component={ListFavorites} />
+    </Tab.Navigator>
   );
-};
-
+}
 export default function App() {
+  const [isLogged, setIsLogged] = useState(false);
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Inicio' }} />
-        <Stack.Screen name="Register" component={Register} options={{ title: 'Registro' }} />
-        <Stack.Screen name="RecoverPassword" component={RecoverPassword} options={{ title: 'RecoverPassword' }} />
-        <Stack.Screen name="EditUser" component={EditUser} options={{ title: 'EditUser' }} />
+    <NavigationContainer ref={navigationRef}>
+      <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        {
+          isLogged ? (
+            <>
+              <Stack.Screen name="Tabs" component={Tabs} />
+              <Stack.Screen name="UniquePokemon" component={Unique} />
+            </>
+          ) : (
+            <Stack.Screen name="Login">
+              {(props) => <Login {...props} onLogin={() => setIsLogged(true)} />}
+            </Stack.Screen>
+          )
+        }
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-  },
-  label: {
-    fontSize: 15,
-    marginTop: 10,
-  },
-  input: {
-    borderRadius: 8,
-    borderWidth: 1,
-    fontSize: 15,
-    padding: 10,
-    marginTop: 5,
-  },
-  send: {
-    backgroundColor: 'black',
-    borderRadius: 10,
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  textButton: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  containerFooter: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  footerText: {
-    fontSize: 12,
-    margin: 5,
-    color: 'black',
-  },
-});
+

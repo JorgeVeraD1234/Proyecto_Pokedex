@@ -6,6 +6,4 @@ marshmallow
 flask-jwt-extended
 bcrypt
 
-
-
 #pip install -r requirements
